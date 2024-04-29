@@ -1,53 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import axios from 'axios'
-import Coin from './Coin';
+import React, { Component } from 'react';
+import CityRoutes from './CityRoutes';
+import logo from './Components/Images/travel india.png';
 
+class App extends Component {
+  state = { width: 0, height: 0 };
 
-function App() {
-  const [coins,setCoins] = useState([])
-  const [search,setSearch] = useState('')
-  useEffect(() => {
-    axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false')
-    .then(res=>{
-       setCoins(res.data)
-       console.log(res.data)
-    }).catch(error=>console.log(error))
-  }, [])
-  const handleChange = e =>{
-    setSearch(e.target.value)
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
   }
-  const filteredCoins = coins.filter(coin=>
-    coin.name.toLowerCase().includes(search.toLowerCase())
-    )
-  return (
-    <div className="crypto coin-app">
-      <div className="coin-search">
-        {/* <h1 className="coin-text">Search your desired coin</h1> */}
-        <form action="">
-          <input type="text" className="coin-input" placeholder="Provide the coin name" onChange={handleChange}/>
 
-        </form>
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+  updateWindowDimensions = () =>
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
 
-      </div>
-      {filteredCoins.map(coin=>{
-        return(
-          <Coin 
-          key={coin.id} 
-          name={coin.name} 
-          image={coin.image} 
-          symbol={coin.symbol}
-          marketcap={coin.market_cap}
-          price={coin.current_price}
-          pricechange={coin.price_change_percentage_24h}
-//           volume={coin.total_volume}
-          />
-        );
-      })}
+  render() {
+    const { width } = this.state;
+    const mobileTablet = width <= 900;
 
-
-    </div>
-  );
+    if (mobileTablet) {
+      return (
+        <div className="mobile-tablet">
+          <img src={logo} alt="Headout" />
+          <p>
+            Currently, we're not supporting Mobile & Tablets{' '}
+            <span role="img" aria-label="Warn">
+              🙏
+            </span>
+          </p>
+        </div>
+      );
+    } else {
+      console.log('here')
+      return <CityRoutes />;
+    }
+  }
 }
 
 export default App;
