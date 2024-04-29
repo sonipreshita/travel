@@ -7,10 +7,6 @@ import Footer from './footer';
 import './Styles/main-home.css';
 
 class MainHome extends Component {
-  constructor(props){
-    super(props);
-  }
-  
   componentDidMount() {
     window.scrollTo(0, 0);
   }

@@ -6,9 +6,6 @@ import Logo from '../Images/travel india.png';
 import '../Styles/Header.css';
 
 class Header extends Component {
-  constructor(props){
-    super(props);
-  }
   state = {
     experience: ''
   };
